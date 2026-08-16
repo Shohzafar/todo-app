@@ -1,0 +1,1 @@
+print( "assALOmu ALAYKUM".capitalize() )    # Assalomu alaykum

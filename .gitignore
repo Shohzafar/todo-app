@@ -1,0 +1,15 @@
+# Virtual Environment
+.venv/
+venv/
+
+# Python Cache
+__pycache__/
+*.pyc
+
+# VS Code Temp Files
+tempCodeRunnerFile.py
+
+# Database & Local Media
+db.sqlite3
+media/
+*.jpg

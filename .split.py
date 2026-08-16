@@ -1,0 +1,1 @@
+print( "Ulugbek, Ravshan, Shahnoza, Shohzafar".split(", ") ) # ["Ulugbek", "Ravshan", "Shahnoza", "Shohzafar"]

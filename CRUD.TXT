@@ -1,0 +1,152 @@
+CRUD — dasturlash va ma'lumotlar bazasi bilan ishlashda eng ko'p qo'llaniladigan 4 ta asosiy amalning bosh harflaridan olingan qisqartma nomdir.
+Har qanday veb-sayt yoki mobil ilova (masalan: Telegram, Instagram, E-Commerce do'konlar, Todo ilovalari) negizida aynan shu 4 ta amal yotadi.
+
+C - CREATE POST - Yangi ma'lumot yaratish, Yangi rasm yoki post joylash.
+R - Read - Ma'lumotni o'qish / ko'rish, Lenta (Feed)dagi postlarni ko'rish
+U - Update - Ma'lumotni tahrirlash / o'zgartirish, Post matnini (caption) tahrirlash
+D - Delete - Ma'lumotni o'chirib tashlash, Postni o'chirib yuborish
+
+CREATE UCHUN MISOL
+def new_todo_page(request):
+    if request.method == 'POST':
+        title = request.POST.get("title")
+        description = request.POST.get("description")
+
+        Todo.objects.create(
+            owner=request.user,
+            title=title,
+            description=description,
+        )
+        return redirect('/')
+
+    return render(request, "new_todo.html")
+
+READ UCHUN MISOL 
+from app_main.models import Todo
+
+# 1. Barcha obyektlarni o'qish
+Todo.objects.all()
+
+# 2. Birinchi elementni olish
+first_todo = Todo.objects.first()
+print(first_todo.title)
+
+# 3. Aniq ID bo'yicha o'qish
+single_todo = Todo.objects.get(id=1)
+print(single_todo.description)
+
+# 4. Qidiruv/Filtrlash bo'yicha o'qish
+python_todos = Todo.objects.filter(title__icontains="python")
+
+Update uchun misol
+from .models import Todo
+
+# 1. Aniq bitta todoni yangilash
+Todo.objects.filter(id=5).update(
+    title="Yangi Sarlavha", 
+    description="Yangi Tavsif"
+)
+
+# 2. Bir nechta todoni BIRDANIGA yangilash
+# Masalan, barcha bajarilmagan (is_completed=False) larni bajarildi (True) ga o'tkazish:
+Todo.objects.filter(is_completed=False).update(is_completed=True)
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Todo
+
+def edit_todo(request, todo_id):
+    # 1. Tahrirlanadigan obyektni bazadan topamiz (ID bo'yicha)
+    todo = get_object_or_404(Todo, id=todo_id)
+
+    # 2. Agar foydalanuvchi "Saqlash" tugmasini bossa (POST)
+    if request.method == 'POST':
+        # Formadan kelgan yangi qiymatlarni olamiz
+        todo.title = request.POST.get('title')
+        todo.description = request.POST.get('description')
+        
+        # 3. AYNAN SHU QATOR UPDATE AMALINI BAJARADI
+        todo.save()
+
+        # O'zgartirib bo'lgach, bosh sahifaga qaytaramiz
+        return redirect('home')
+
+    # 4. Agar sahifaga shunchaki kirilgan bo'lsa (GET), eskilarini ko'rsatamiz
+    return render(request, 'edit_todo.html', {'todo': todo})
+
+Delete uchun misol
+def delete_todo(request, todo_id):
+    todo = Todo.objects.get(id=todo_id)
+    todo.delete()
+    return redirect("/")
+
+project urlsni app_mainga o'tkazish
+from django.contrib import admin
+from django.urls import path, include  # 1. include funksiyasini import qilasiz
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    
+    # 2. Barcha asosiy so'rovlarni 'app_main' ilovasining urls.py fayliga yo'naltiramiz
+    path('', include('app_main.urls')),
+]
+
+# app_main/views.py
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Todo
+
+# 1. Bosh sahifa (Read)
+def home_page(request):
+    todos = Todo.objects.all()
+    return render(request, 'app_main/home.html', {'todos': todos})
+
+# 2. Yangi Todo yaratish sahifasi va amali (Create)
+def new_todo_page(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        
+        Todo.objects.create(title=title, description=description)
+        return redirect('home')
+        
+    return render(request, 'app_main/new_todo.html')
+
+# 3. Todo tahrirlash sahifasi va amali (Update)
+def edit_todo_page(request, todo_id):
+    todo = get_object_or_404(Todo, id=todo_id)
+    
+    if request.method == 'POST':
+        todo.title = request.POST.get('title')
+        todo.description = request.POST.get('description')
+        todo.save()  # UPDATE amali
+        return redirect('home')
+        
+    return render(request, 'app_main/edit_todo.html', {'todo': todo})
+
+# 4. Todo o'chirish amali (Delete)
+def delete_todo(request, todo_id):
+    todo = get_object_or_404(Todo, id=todo_id)
+    if request.method == 'POST':
+        todo.delete()  # DELETE amali
+    return redirect('home')
+
+# app_main/urls.py
+from django.urls import path
+from . import views  # Shu papkadagi views.py ni import qilamiz
+
+urlpatterns = [
+    path('', views.home_page, name='home'),
+    path('new-todo/', views.new_todo_page, name='new_todo'),
+    path('edit-todo//', views.edit_todo_page, name='edit_todo'),
+    path('delete-todo//', views.delete_todo, name='delete_todo'),
+]
+
+<!-- Hardcoded yozish o'rniga dinamik {% url %} ishlatiladi -->
+
+<!-- Bosh sahifaga o'tish -->
+<a href="{% url 'home' %}">Bosh sahifa</a>
+
+<!-- Yangi qo'shish sahifasiga o'tish -->
+<a href="{% url 'new_todo' %}">Yangi Todo</a>
+
+<!-- Tahrirlash sahifasiga ID bilan o'tish -->
+<a href="{% url 'edit_todo' todo.id %}">Tahrirlash</a>

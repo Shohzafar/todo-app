@@ -1,0 +1,1 @@
+print("assalomu allaykum" .upper()) # ASSALOMU ALLAYKUM

@@ -1,0 +1,96 @@
+# *args     - arguments
+# **kwargs  - keyword arguments
+
+
+def malumot(**malumotlar):  # { "ism": "Alisher", "yosh": 20, ... }
+    for kalit, qiymat in malumotlar.items():
+        print(f"{kalit}: {qiymat}")
+    print("\n")
+
+
+# malumot(ism="Alisher", yosh=20, manzil="Toshkent")
+# ism: alisher
+# yosh: 20
+# manzil: Toshkent
+
+
+# malumot(ism="Alisher", yosh=20)
+# ism: alisher
+# yosh: 20
+
+
+# malumot(ism="Alisher")
+# ism: alisher
+
+
+
+# def korsat(**malumotlar):
+#     print( type(malumotlar) )
+#     print( malumotlar )
+
+# korsat(ism="Aziz", yosh=20, manzil="Toshkent")
+# <class 'dict'>
+# { 'ism': 'Aziz', 'yosh': 20, 'manzil': 'Toshkent' }
+
+
+
+# def funksiya(oddiy_param, *args, **kwargs):
+#     print('Oddiy param', oddiy_param)
+#     print('Args', args)
+#     print('Kwargs', kwargs)
+
+# funksiya(-1, 0, 1, 2, 3, ism='Aziz', yosh=20)
+
+
+
+# def oquvchi_malumoti(...):
+#     ...
+
+
+# oquvchi_malumoti(ism='Dilnoza')
+# ism: Dilnoza
+
+# oquvchi_malumoti(ism='Dilnoza', yosh=20)
+# ism: Dilnoza
+# yosh: 20
+
+# oquvchi_malumoti(ism='Dilnoza', yosh=20, baho=5)
+# ism: Dilnoza
+# yosh: 20
+# baho: 5
+
+# user = {
+#     'ism': 'Aziz',
+#     'yosh': 20,
+#     'uylangan': False,
+# }
+
+# print( user.keys() )
+# # [ 'ism', 'yosh', 'uylangan' ]
+
+
+# print( user.values() )
+# # [ 'Aziz', 20, False ]
+
+
+# print( user.items() )
+# [ ['ism', 'Aziz'], ['yosh', 20], ['uylangan', False] ]
+
+
+# An'anaviy funksiya
+# def hisobla(a, b):
+#     return a + b
+
+# def kvadrat(a):
+#     return a ** 2
+
+
+# lambda(anonim, noma'lum) funksiyalar
+# hisobla = lambda a, b: a + b
+# kvadrat = lambda a: a ** 2
+
+# print( hisobla(2, 3) )  # 5
+# print( kvadrat(5) )     # 25
+
+
+# map, filter, reduce

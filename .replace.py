@@ -1,0 +1,1 @@
+print( "assalomu*alaykum".replace("*", " ") )  # assalomu alaykum

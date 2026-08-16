@@ -1,0 +1,1 @@
+print("AssAlOmU AlLaYkUm" .title()) # Assalomu Allaykum
