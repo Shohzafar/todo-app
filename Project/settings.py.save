@@ -29,10 +29,8 @@ SECRET_KEY = 'django-insecure-kwxkq)^bwb!u_kn9v!3aq2e@$@1)w7!1+njrj(mo1#_&5g89!*
 DEBUG = True
 
 ALLOWED_HOSTS = ["142.93.7.3", "www.142.93.7.3", "www.codecraftofficial.com", "codecraftofficial.com"]
-CSRF_TRUSTED_ORIGINS = [
-	"https://www.codecraftofficial.com",
-	"https://codecraftofficial.com",
-]
+CSRF_TRUSTED_ORIGINS = [ 
+	"https://codecraftofficial.com",]
 
 # Application definition
 
@@ -125,7 +123,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / 'static'
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media'
@@ -138,7 +135,3 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = env.str("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = env.str("EMAIL_HOST_PASSWORD")   
 
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = False
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
